@@ -1,0 +1,30 @@
+{
+    "name": "webmin"
+  , "version": "0.0.1"
+  , "description": "Linux Web Admin application inspired by the PERL webmin tool which is no longer in active development"
+  , "keywords": ["web", "admin", "webmin"]
+  , "homepage": "http://it.knightnet.org.uk"
+  , "author": {
+      "name": "Julian Knight"
+    , "email": "webmin@totallyinformation.net"
+    , "url": "http://it.knightnet.org.uk"
+  }
+  , "bugs": { 
+      "url" : "http://github.com/owner/project/issues"
+    , "email" : "webminjs@totallyinformation.net"
+  }
+  , "private": true
+  , "scripts": {"start": "node app.js"}
+  , "dependencies": {
+      "express": ">= 2.5.8"
+    , "jade": ">= 0.0.1"
+    , "portfinder": ">= 0.2.1"
+    , "date-utils": ">= 1.2.10"
+  }
+  , "directories": {
+    "doc": "docs"
+  }
+  , "engines" : { 
+    "node" : ">=0.6.14" 
+  }
+}

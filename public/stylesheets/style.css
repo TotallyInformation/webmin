@@ -1,0 +1,13 @@
+body {
+  padding: 50px;
+  font: 18px "Lucida Grande", Calibri, Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+ul.csl { list-style: none; margin: 0; padding: 0; display: inline;}
+ul.csl li { display: inline; }
+ul.csl li:after { content: ", "; }
+ul.csl li:last-child:after { content: ""; }
