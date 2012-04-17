@@ -22,10 +22,9 @@ var express = require('express')
   
 require('date-utils');
 
-var options = {
-  key: fs.readFileSync('/etc/ssl/private/totallyinformation.key'),
-  cert: fs.readFileSync('/etc/ssl/private/totallyinformation.crt')
-};
+var secureme = require('./.secureme');
+
+var options = secureme.certs;
 
 // Simply pass key & cert to get https instead of http!
 var app = module.exports = express.createServer(options);
@@ -54,7 +53,7 @@ app.configure(function(){
   // User is not re-requested if already set
   // req.headers.authorization.split(" ")[0] == 'Basic' if user is logged in
   app.use(express.basicAuth(function(user, pass){
-    return 'julian' == user & 'Jk.BHost' == pass;
+    return secureme.secure(user,pass);
   }) );
   
   // Dispatch incoming request URL's to relavent controllers
