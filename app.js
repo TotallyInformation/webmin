@@ -14,20 +14,19 @@
  */
 
 var express = require('express')
+  , https = require('https')
   , routes = require('./routes')
   , portfinder = require('portfinder')
-  , fs = require('fs')
-  , log = require('util').log
   ;
   
 require('date-utils');
 
 var secureme = require('./.secureme');
-
 var options = secureme.certs;
 
 // Simply pass key & cert to get https instead of http!
-var app = module.exports = express.createServer(options);
+//var app = module.exports = express.createServer(options);
+var app = module.exports = express();
 
 // Configuration
 
@@ -46,14 +45,17 @@ app.configure(function(){
   
   // Log requests to the console - need to change this for dev/prod use
   // @see http://www.senchalabs.org/connect/middleware-logger.html
-  app.use(express.logger( { immediate: true, format: ':date :url :method :status [:req[authorization] :response-time :res[content-length]] :remote-addr [Referer: :referrer]' } ) );
+  app.use(express.logger( { 
+    immediate: true, 
+    format: ':date :url :method :status [:req[authorization] :response-time :res[content-length]] :remote-addr [Referer: :referrer]' 
+  } ) );
   // add a response-time header
   app.use(express.responseTime()); 
   // Simplistic basic auth - user challanged for id & pw - callback returns true/false and request.user is set on true
   // User is not re-requested if already set
   // req.headers.authorization.split(" ")[0] == 'Basic' if user is logged in
   app.use(express.basicAuth(function(user, pass){
-    return secureme.secure(user,pass);
+    return  secureme.secure(user,pass);
   }) );
   
   // Dispatch incoming request URL's to relavent controllers
@@ -62,9 +64,6 @@ app.configure(function(){
   // Serve static files, NB: URL is relative to root (e.g. http://xyz.com/) but folder is as specified (e.g. /var/nodejs/webmin/static/)
   app.use(express.static(__dirname + '/public')); // test with /basic.html
   
-  // Need error handler here
-  //app.use(express.errorHandler(...));
-
 });
 
 // Configure dev specific
@@ -107,8 +106,10 @@ portfinder.getPort(function (err, port) {
 	// `port` is guarenteed to be a free port 
 	// By default portfinder will start searching from 8000. To change this simply set portfinder.basePort
 	//https.createServer(options, app).listen(port, function(){
-	app.listen(port, function(){
+	https.createServer(options, app).listen(port, function(){
 	  var myNow = new Date();	
-	  console.log("%s Express server listening on port %d in %s mode", myNow.toFormat('YYYY-MM-DD HH24:MI:SS '), app.address().port, app.settings.env);
+	  console.log("%s Express server listening on port %d in %s mode", myNow.toFormat('YYYY-MM-DD HH24:MI:SS '), 
+        port, app.settings.env
+      );
 	});
 });

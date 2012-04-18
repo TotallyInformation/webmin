@@ -1,9 +1,16 @@
-
+// In this case, there is one user name and password manually place.
+// In reality, this should be a bit more robust!
+// This is used by the secure module in Express/Connect and will use HTTP BASIC authentication
+// Which is only secure when over an SSL connection.
 exports.secure = function(user, pass){
-	'julian' == user & 'Jk.BHost' == pass;
+	return 'some_user' == user & 'some_password' == pass;
 };
 
+// Certs for node.js have to be in PEM format. OpenSSL generates these by default
+// but if generated for Apache, they may appear with .key and .crt extensions
+// If they fail, it's probably because they are not in PEM format internally, use
+// the utils to convert them.
 exports.certs = {
-  key: fs.readFileSync('/etc/ssl/private/totallyinformation.key'),
-  cert: fs.readFileSync('/etc/ssl/private/totallyinformation.crt')
+  key: fs.readFileSync('/etc/ssl/private/some_key_for_apache.key'),
+  cert: fs.readFileSync('/etc/ssl/private/some_key_for_apache.crt')
 };
