@@ -1,0 +1,9 @@
+
+exports.secure = function(user, pass){
+	'julian' == user & 'Jk.BHost' == pass;
+};
+
+exports.certs = {
+  key: fs.readFileSync('/etc/ssl/private/totallyinformation.key'),
+  cert: fs.readFileSync('/etc/ssl/private/totallyinformation.crt')
+};

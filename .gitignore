@@ -1,0 +1,14 @@
+# Git ignore file for webmin.js
+
+# Exclude forever stuff (used for enforcing/reloading changed files)
+# @see npm search forever
+
+.foreverignore
+logs
+
+# Exclude other node stuff
+npm-debug.log
+node_modules
+
+# Exclude files that should be secure so they don't end up on github!
+.secureme
