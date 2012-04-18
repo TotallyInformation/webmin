@@ -12,12 +12,13 @@ Webmin.js is my first proper experiment with [Node.js](http://nodejs.org). I wan
 * Uses a simple JSON variable to create a menu of links
 * Provides a [package.json](package.json) file for npm installation. You can check out the [github project](https://TotallyInformation@github.com/TotallyInformation/webmin.git) and run `npm install -d` at the command prompt to get the dependencies.
 * Commands currently implemented:
+
   * `utime` - shows the output of the `uptime` shell command
   * `top` - shows the output of a single top (`top -b -n 1`) shell command
   * `ports` - shows the output of lsof and netstat showing open ports on the system
   * `cmdexec` - input any shell command and return the output to the browser
-    * Currently has limited buffer capability (easily exceeded by a large `aptitude search` for example)
-    * Has **NO** input checking yet! You've been warned!
+     * Currently has limited buffer capability (easily exceeded by a large `aptitude search` for example)
+     * Has **NO** input checking yet! You've been warned!
 
 ## Not Yet Done ##
 Some of the other things I want to do:
