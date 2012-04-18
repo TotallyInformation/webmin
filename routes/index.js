@@ -74,6 +74,7 @@ function setCmdParams() {
 exports.index = function(req, res){
   res.render('index', { 
     title: 'Node.js Webmin Replacement'
+  , layout: 'layout.jade'
   , description: 'Webmin replacement in Node.js<br>Use the menu at the top of the page to continue.'
   , links: links
   })
