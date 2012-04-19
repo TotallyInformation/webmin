@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h3= title
+
+  form#filename(method="post")
+    label(for="file")= "File To Edit:"  
+      input(
+        type="text"
+      , name="file"
+      , value=file
+      , title=file
+      )
+    input(
+      type="submit"
+    , name="edit"
+    , value="Edit"
+    )
+
+  form#filetxt(method="post")
+    div
+      textarea(name="filetext", cols="100", rows="25")= out
+    input(
+      type="submit"
+    , name="save"
+    , value="Save"
+    )
