@@ -8,7 +8,7 @@ html
     //- Show menu on every page using json 'links' var
     div#menu
       ul(class="csl")
-        each link, name in links
+        each link, name in menu
           li
             a(href=link) #{name} 
     block content

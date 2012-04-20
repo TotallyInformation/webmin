@@ -10,6 +10,7 @@ Webmin.js is my first proper experiment with [Node.js](http://nodejs.org). I wan
 * Creates an https server assigned to a free port (starting at 8000)
 * Uses an external js file (example included as [docs/.secureme.example](./docs/.secureme.example)) that can be require'd to provide certificate and http basic authentication details.
 * Uses a simple JSON variable to create a menu of links
+* Uses a JSON file to provide a grouped list of links for display on the index page. See [docs/links.json.example](./docs/links.json.example)
 * Provides a [package.json](package.json) file for npm installation. You can check out the [github project](https://TotallyInformation@github.com/TotallyInformation/webmin.git) and run `npm install -d` at the command prompt to get the dependencies.
 * Commands currently implemented:
 

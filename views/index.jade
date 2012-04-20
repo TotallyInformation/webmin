@@ -8,51 +8,8 @@ block content
     p!= description
 
   hr
-  h3 Lnks
-  ul
-    li
-      a(href="https://totallyinformation.net/_man.php") Man Pages
-    li
-      a(href="https://totallyinformation.net:8080/") Webmin
-    li
-      a(href="https://totallyinformation.net/wiki") Knowledgebase
-    li
-      a(href="https://totallyinformation.net/doc/") Server Doc Pages
-    li
-      a(href="https://totallyinformation.net/ajaxterm/") aTerm
-  h3 Testing Only
-  ul
-    li
-      a(href="https://totallyinformation.net/wa/") Webalizer
-    li
-      a(href="https://totallyinformation.net/fm/") ajaxPlorer
-    li
-      a(href="https://totallyinformation.net/extplorer/") Extplorer
-    li
-      a(href="https://totallyinformation.net/pa/") Postfix Admin
-    li
-      a(href="https://totallyinformation.net/la/") Log Analyzer
-    li
-      a(href="https://totallyinformation.net/wm2/") Webmail Lite
-    li
-      a(href="https://totallyinformation.net/ma/") ISOqLog
-    li
-      a(href="https://totallyinformation.net/ss/") EpyLog
-    li
-      a(href="https://totallyinformation.net/awstats/") AWStats
-    li
-      a(href="https://totallyinformation.net/ti-info/") Old Knowledgebase
-    li
-      a(href="https://totallyinformation.net/awefull/") Awefull
-    li
-      a(href="https://totallyinformation.net/kb/") PmWiki
-    li
-      a(href="https://totallyinformation.net/m/") MediaWiki
-    li
-      a(href="https://totallyinformation.net/wm-beta/") Roundcube Beta
-    li
-      a(href="https://totallyinformation.net/mysh") Test Shell
-    li
-      a(href="https://totallyinformation.net/moin") MoinMoin Wiki
-    li
-      a(href="https://totallyinformation.net/wiki") Knowledgebase
+  each link, name in links
+    h4 #{name}
+    each lnk, i in link
+      li
+        a(href=lnk)= i

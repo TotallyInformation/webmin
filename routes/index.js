@@ -29,7 +29,7 @@ function jk_cmd(cmd, callback) {
   });
 }
 
-var links = {
+var menu = {
     'Home'    : '/'
   , 'Test'    : '/test'
   , 'Uptime'  : '/utime'
@@ -49,6 +49,17 @@ var links = {
  *  Aptitude/npm/pecl
  */
 
+function getLinks(filename) {
+  var fs = require('fs');
+  var filename = filename || './links.json';
+
+  try {
+    return JSON.parse(fs.readFileSync(filename));
+  } catch(err) {
+    return {"Error": err};
+  }
+}
+
 // Default parameters for cmdexec.jade template
 var cmdParams = {};
 // We have to reset these for each cmd... fn call
@@ -64,7 +75,7 @@ function setCmdParams() {
     , cmdHint: "Enter a command"
     , btnTxt: "Submit"
     //, layout: "layoutname"
-    , links: links
+    , menu: menu
   };
 }
 
@@ -72,12 +83,26 @@ function setCmdParams() {
  * Functions to render pages
  */
 
+/**
+ * Default index page for webmin.js
+ * @param  {object} req HTTP Request object
+ * @param  {object} res HTTP Response object
+ * @return {null}
+ */
 exports.index = function(req, res){
+  /**
+   * @param {string} templateName
+   * @param {JSON} localVars variables required for the template:
+   *   title: title string
+   *   description: string
+   *   menu: JSON, list of  link-name:link as a menu
+   *   links: JSON, list of link-name:link grouped by a group title
+   */
   res.render('index', { 
     title: 'Node.js Webmin Replacement'
-  , layout: 'layout.jade'
   , description: 'Webmin replacement in Node.js<br>Use the menu at the top of the page to continue.'
-  , links: links
+  , menu: menu
+  , links: getLinks() || {}
   })
 };
 
@@ -101,7 +126,8 @@ exports.test = function(req, res){
       '<hr>' +
       'Res.Locals: <pre>' + inspect(res.locals) + '</pre>' +
       'Res: <pre>' + inspect(res) + '</pre>'
-  , links: links
+  , menu: menu
+  , links: {}
   })
 };
 
@@ -113,7 +139,7 @@ exports.utime = function(req, res){
   , uptime: secondsToString(os.uptime())
   , loadavg: os.loadavg()[0] + ", " + os.loadavg()[1] + ", " + os.loadavg()[2]
   , freemem: os.freemem()/1024
-  , links: links
+  , menu: menu
   })
 };
 
@@ -186,7 +212,7 @@ exports.fsedit = function(req, res){
 
   res.render('fsedit', {
     title: "Edit File"
-  , links: links
+  , menu: menu
   , file: edFile
   , out:  out
   });
@@ -194,6 +220,6 @@ exports.fsedit = function(req, res){
 
 /*
  * To Do
- *   List log files with links to each (tail)
+ *   List log files with menu to each (tail)
  *   Editor
  */
