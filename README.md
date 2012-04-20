@@ -19,6 +19,9 @@ Webmin.js is my first proper experiment with [Node.js](http://nodejs.org). I wan
   * `cmdexec` - input any shell command and return the output to the browser
      * Currently has limited buffer capability (easily exceeded by a large `aptitude search` for example)
      * Has **NO** input checking yet! You've been warned!
+  * `fsedit` - VERY simplistic file editor. Supply a folder/file name - it is retrieved to a textarea, edit and save.
+     * Has **NO** input checking yet! You've been warned!
+
 
 ## Not Yet Done ##
 Some of the other things I want to do:
