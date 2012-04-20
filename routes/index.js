@@ -36,6 +36,7 @@ var links = {
   , 'Top' : '/top'
   , 'List Open Ports' : '/ports'
   , 'Command' : '/cmdexec'
+  , 'Edit Files' : '/fsedit'
   , 'View Log Files' : '/'
   , 'Service Restart' : '/'
 }
@@ -83,7 +84,23 @@ exports.index = function(req, res){
 exports.test = function(req, res){
   res.render('index', { 
     title: 'Test'
-  , description: 'Testing something'
+  , description: 'Lets see Express\'s request object. <hr>' +
+      'Req.Url: <pre>' + inspect(req.url) + '</pre>' +
+      '<hr>' +
+      'Req.Query: <pre>' + inspect(req.query) + '</pre>' +
+      '<hr>' +
+      'Req.User: <pre>' + inspect(req.user) + '</pre>' +
+      '<hr>' +
+      'Req.Headers: <pre>' + inspect(req.headers) + '</pre>' +
+      '<hr>' +
+      'Req.Connection.Pair._SecureEstablished: <pre>' + inspect(req.connection.pair._secureEstablished) + '</pre>' +
+      'Req.Connection.Pair.Credentials: <pre>' + inspect(req.connection.pair.credentials) + '</pre>' +
+      'Req.Connection.Pair.SSL: <pre>' + inspect(req.connection.pair.ssl) + '</pre>' +
+      '<hr>' +
+      'Req: <pre>' + inspect(req) + '</pre>' +
+      '<hr>' +
+      'Res.Locals: <pre>' + inspect(res.locals) + '</pre>' +
+      'Res: <pre>' + inspect(res) + '</pre>'
   , links: links
   })
 };
@@ -149,6 +166,29 @@ exports.cmdports = function(req, res){
       cmdParams.showform=false; // We don't need the command entry form
 
       res.render('cmdexec', cmdParams);
+  });
+};
+
+exports.fsedit = function(req, res){
+  var fs = require('fs');
+
+  // Pick up the value from the posted form if available otherwise default to ls
+  var edFile = req.body.file || 'test.txt';
+  
+  var out;
+  if (req.method == "POST" && req.body.save == "Save") {
+    fs.writeFileSync(edFile, req.body.filetext);
+    out = req.body.filetext;
+    info = 'File written';
+  } else {
+    out = fs.readFileSync(edFile);    
+  }
+
+  res.render('fsedit', {
+    title: "Edit File"
+  , links: links
+  , file: edFile
+  , out:  out
   });
 };
 

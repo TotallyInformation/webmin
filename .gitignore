@@ -12,3 +12,5 @@ node_modules
 
 # Exclude files that should be secure so they don't end up on github!
 .secureme
+links.json
+test.txt

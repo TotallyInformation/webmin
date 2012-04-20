@@ -1,32 +1,32 @@
 //- Called by index.js/cmdexec & cmdtop
+extends layout
 
-//- https://github.com/visionmedia/jade#a6-9
+block content
+  h3= title
 
-h3= title
-
-//- Only show the command form if required
-if showform
-  form#docmd(method="post")
-    label(for="command")= lblCommand 
+  //- Only show the command form if required
+  if showform
+    form#docmd(method="post")
+      label(for="command")= lblCommand 
+        input(
+          type="text"
+        , name="command"
+        , value=cmd
+        , title=cmdHint
+        )
       input(
-        type="text"
-      , name="command"
-      , value=cmd
-      , title=cmdHint
+        type="submit"
+      , value=btnTxt
       )
-    input(
-      type="submit"
-    , value=btnTxt
-    )
 
-#output-container
+  #output-container
 
-pre #{results}
+  pre #{results}
 
-if errors
-  h4 Errors
-  pre #{errors}
+  if errors
+    h4 Errors
+    pre #{errors}
 
-if other
-  h4 Other Info
-  pre #{other}
+  if other
+    h4 Other Info
+    pre #{other}

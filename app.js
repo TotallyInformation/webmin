@@ -41,6 +41,8 @@ app.configure(function(){
   // parse the request body & populate req.body
   app.use(express.bodyParser());
   // checks req.body.method for http method override
+  // Allows something like:  <input type="hidden" name="_method" value="put" />
+  //   in a form to override a post
   app.use(express.methodOverride());
   
   // Log requests to the console - need to change this for dev/prod use
@@ -58,7 +60,11 @@ app.configure(function(){
     return  secureme.secure(user,pass);
   }) );
   
-  // Dispatch incoming request URL's to relavent controllers
+  // Check for and handle any Cookies passed from the client
+  // see res.cookies
+  app.use(express.cookieParser());
+
+  // Dispatch incoming request URL's to relavent controllers (see .get & .post below)
   app.use(app.router);
   
   // Serve static files, NB: URL is relative to root (e.g. http://xyz.com/) but folder is as specified (e.g. /var/nodejs/webmin/static/)
@@ -79,8 +85,11 @@ app.configure('production', function(){
 // Routes - any files in fldr "./routes" are require()'d & exported functions can be ref'd here
 
 // Default root route! "/*" accepts ALL routes
+// 2nd param needs to be a function. It will recieve 3 params: req, res, next
 app.get('/cmdexec', routes.cmdexec);
 app.post('/cmdexec', routes.cmdexec);
+app.get('/fsedit', routes.fsedit);
+app.post('/fsedit', routes.fsedit);
 app.get('/utime', routes.utime);
 app.get('/top', routes.cmdtop);
 app.get('/ports', routes.cmdports);
@@ -107,6 +116,7 @@ portfinder.getPort(function (err, port) {
 	// By default portfinder will start searching from 8000. To change this simply set portfinder.basePort
 	//https.createServer(options, app).listen(port, function(){
 	https.createServer(options, app).listen(port, function(){
+  //app.createServer(options).listen(port, function(){
 	  var myNow = new Date();	
 	  console.log("%s Express server listening on port %d in %s mode", myNow.toFormat('YYYY-MM-DD HH24:MI:SS '), 
         port, app.settings.env
