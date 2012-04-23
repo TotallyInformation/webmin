@@ -1,0 +1,19 @@
+{
+  "Links": {
+    "Link 1":        "https://somewhere.com/somepage.php",
+    "Link 2":        "https://somewhere.com/"
+  }
+, "Julian Knight": {
+    "GitHub":           "https://github.com/TotallyInformation/webmin"
+  , "Stack Exchange":   "http://stackexchange.com/users/1375993/julian-knight"
+  , "LinkedIn":         "http://uk.linkedin.com/in/knightnet"
+  , "Twitter":          "https://twitter.com/#!/knightnet"
+  }
+, "Node.js": {
+    "API":               "http://nodejs.org/docs/latest/api/"
+  , "Module List (Wiki)":"http://nodejs.org/docs/latest/api/"
+  , "NPM Registry":      "http://search.npmjs.org/"
+  , "Node Toolbox":      "http://toolbox.no.de/"
+  , "Nipster":           "http://eirikb.github.com/nipster/"
+  }
+}
