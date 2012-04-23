@@ -29,6 +29,30 @@ function jk_cmd(cmd, callback) {
   });
 }
 
+function readDir(startPath, cbDone) {
+  var fs = require('fs');
+  startPath = startPath || '.';
+  var results = { 'folder': startPath, 'folders': {}, 'files': {} };
+  fs.readdir(startPath, function(err, list) {
+    //if (err) return cbDone(err);
+    if (err) return err;
+    list.forEach(function(file) {
+      console.dir(startPath + "/" + file);
+      fs.stat(startPath + "/" + file, function(err, stat) {
+        if (err)       console.dir("ERR: " + startPath + "/" + file);
+        console.dir({'file': file, "stat": stat, "isDir":stat.isDirectory()});
+        if (stat && stat.isDirectory()) {
+          results.folders.push(file);
+        } else {
+          results.files.push(file);
+        }
+      });
+    });
+    //return cbDone(results);
+    return results;
+  });
+}
+
 var menu = {
     'Home'    : '/'
   , 'Test'    : '/test'
@@ -51,7 +75,7 @@ var menu = {
 
 function getLinks(filename) {
   var fs = require('fs');
-  var filename = filename || './links.json';
+  filename = filename || './links.json';
 
   try {
     return JSON.parse(fs.readFileSync(filename));
@@ -101,7 +125,7 @@ exports.index = function(req, res){
   res.render('index', { 
     title: 'Node.js Webmin Replacement'
   , description: 'Webmin replacement in Node.js<br>Use the menu at the top of the page to continue.'
-  , menu: menu
+  , menu: menu || {}
   , links: getLinks() || {}
   })
 };
@@ -109,7 +133,13 @@ exports.index = function(req, res){
 exports.test = function(req, res){
   res.render('index', { 
     title: 'Test'
-  , description: 'Lets see Express\'s request object. <hr>' +
+  , description: 
+      'Test readDir:<pre>' + 
+      readDir('.',function(x){
+        return inspect(x);
+      }) + 
+      '</pre>' +
+      'Lets see Express\'s request object. <hr>' +
       'Req.Url: <pre>' + inspect(req.url) + '</pre>' +
       '<hr>' +
       'Req.Query: <pre>' + inspect(req.query) + '</pre>' +
@@ -126,7 +156,7 @@ exports.test = function(req, res){
       '<hr>' +
       'Res.Locals: <pre>' + inspect(res.locals) + '</pre>' +
       'Res: <pre>' + inspect(res) + '</pre>'
-  , menu: menu
+  , menu: menu || {}
   , links: {}
   })
 };
@@ -139,7 +169,7 @@ exports.utime = function(req, res){
   , uptime: secondsToString(os.uptime())
   , loadavg: os.loadavg()[0] + ", " + os.loadavg()[1] + ", " + os.loadavg()[2]
   , freemem: os.freemem()/1024
-  , menu: menu
+  , menu: menu || {}
   })
 };
 
@@ -195,6 +225,9 @@ exports.cmdports = function(req, res){
   });
 };
 
+// Action function for /fsedit - edit a file
+// DANGER: We are NOT filtering input from the browser!!!!
+//         Exposing this to the Internet WILL lead to abuse of your system!!!!
 exports.fsedit = function(req, res){
   var fs = require('fs');
 
@@ -202,24 +235,27 @@ exports.fsedit = function(req, res){
   var edFile = req.body.file || 'test.txt';
   
   var out;
+  // If called via a POST with the Save button
   if (req.method == "POST" && req.body.save == "Save") {
+    // Write the file
     fs.writeFileSync(edFile, req.body.filetext);
+    // Put the text back so we don't loose it on screen
     out = req.body.filetext;
     info = 'File written';
   } else {
+    // We are either called via GET or POST with Edit button pressed
     out = fs.readFileSync(edFile);    
   }
 
   res.render('fsedit', {
     title: "Edit File"
-  , menu: menu
+  , menu: menu || {}
   , file: edFile
   , out:  out
   });
-};
+}; // ---- End of function fsedit() ---- //
 
 /*
  * To Do
  *   List log files with menu to each (tail)
- *   Editor
  */
